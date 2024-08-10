@@ -5,6 +5,8 @@ from langserve import add_routes
 from uvicorn import run
 from langchain_openai import ChatOpenAI
 
+from reliable_rag_graph.graph.graph import create_graph
+
 
 def start() -> None:
     load_dotenv()
@@ -19,9 +21,11 @@ def start() -> None:
         description="A reliable RAG implementation using langgraph",
     )
 
+    runnable = create_graph()
+
     add_routes(
         app,
-        ChatOpenAI(model=model)
+        runnable
     )
 
     run(app, host=hostname, port=port)
