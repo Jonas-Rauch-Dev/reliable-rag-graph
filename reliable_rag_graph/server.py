@@ -9,9 +9,9 @@ from langchain_openai import ChatOpenAI
 def start() -> None:
     load_dotenv()
 
-    hostname: str = getenv("SERVER_HOSTNAME")
-    port: int = int(getenv("SERVER_PORT"))
-    model: str = getenv("OPENAI_MODEL")
+    hostname: str = getenv("SERVER_HOSTNAME", "0.0.0.0")
+    port: int = int(getenv("SERVER_PORT", "8000"))
+    model: str = getenv("OPENAI_MODEL", "gpt-3.5-turbo")
 
     app = FastAPI(
         title="Reliable RAG Graph",
