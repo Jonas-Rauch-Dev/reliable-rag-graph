@@ -1,15 +1,16 @@
 
 from typing import TypedDict
-from langchain_core.pydantic_v1 import BaseModel
+from langchain_core.pydantic_v1 import BaseModel, Field
 
 
 class InputType(BaseModel):
-    pass
+    input: str = Field(description="The user query")
 
 
 class OutputType(BaseModel):
-    pass
+    output: str
 
 
 class GraphState(TypedDict, total = False):
-    pass
+    input: str
+    output: str

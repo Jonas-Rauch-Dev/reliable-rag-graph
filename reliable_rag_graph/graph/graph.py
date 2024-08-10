@@ -30,10 +30,12 @@ def create_graph() -> Runnable:
     # TODO: add edges
     workflow.add_conditional_edges("router", rag_or_web)
     workflow.add_edge(["rag_retriever", "web_retriever"], "documents_grader")
-    workflow.add_conditional_edges("grader", ready_to_generate)
-    workflow.add_edge("generate", "hallucinator")
+    workflow.add_conditional_edges("documents_grader", ready_to_generate)
+    workflow.add_edge("generater", "hallucinator")
     workflow.add_conditional_edges("hallucinator", has_hallucinated)
     workflow.add_conditional_edges("answer_grader", final_answer)
+
+    workflow.set_entry_point("router")
 
     return workflow \
         .compile() \
