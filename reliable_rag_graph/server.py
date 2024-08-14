@@ -1,13 +1,15 @@
+import aiofiles
 from dotenv import load_dotenv
 from os import getenv
-from fastapi import FastAPI, UploadFile, File, HTTPException, status
+from fastapi import FastAPI, UploadFile, File
 from typing import Annotated
 from langserve import add_routes
 from uvicorn import run
-import filetype
 
 from reliable_rag_graph.graph.graph import create_graph
 from reliable_rag_graph.graph.logger import get_logger
+from reliable_rag_graph.graph.utils.check_file_type import check_file_type
+from reliable_rag_graph.graph.utils.write_file import write_file
 
 logger = get_logger("server")
 
@@ -23,43 +25,12 @@ app = FastAPI(
 )
 
 
-def check_file_type(file: UploadFile) -> bool:
-
-    accepted_file_types = [
-        "application/pdf",
-        "pdf",
-    ]
-
-    file_info = filetype.guess(file.file)
-    if file_info is None:
-        raise HTTPException(
-            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-            detail="Could not determine file type",
-        )
-
-    detected_file_type = file_info.extension.lower()
-
-    if(
-        file.content_type not in accepted_file_types 
-        or detected_file_type not in accepted_file_types
-    ):
-        logger.info(f"Invalid file type: {detected_file_type}")
-        raise HTTPException(
-            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-            detail="Unsupported file type"
-        )
-
-    return detected_file_type
-
-
 @app.post("/fileupload/")
 async def upload_file(
     file: Annotated[UploadFile, File()]
 ):
-    logger.info(f"file: {file}")
-    file_type = check_file_type(file)
-
-    # TODO: split file in chunks with corresponding file splitter
+    check_file_type(file)
+    await write_file(file)
 
 
 

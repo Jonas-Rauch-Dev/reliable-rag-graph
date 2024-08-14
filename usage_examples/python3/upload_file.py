@@ -17,4 +17,4 @@ with open(file_path, 'rb') as file:
 if response.status_code == 200:
     print('Upload succesfull')
 else:
-    print(f'Error during file upload: {response.status_code}')
+    print(f'Error during file upload: {response.status_code}, {response.json()['detail']}')
