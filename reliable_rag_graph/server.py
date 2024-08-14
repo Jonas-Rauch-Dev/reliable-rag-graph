@@ -8,6 +8,7 @@ from uvicorn import run
 from reliable_rag_graph.graph.graph import create_graph
 from reliable_rag_graph.graph.logger import get_logger
 from reliable_rag_graph.graph.utils.check_file_type import check_file_type
+from reliable_rag_graph.graph.utils.upsert_file import upsert_file
 from reliable_rag_graph.graph.utils.write_file import write_file
 
 logger = get_logger("server")
@@ -25,11 +26,11 @@ app = FastAPI(
 
 
 @app.post("/fileupload/")
-async def upload_file(
-    file: Annotated[UploadFile, File()]
-):
-    check_file_type(file)
-    await write_file(file)
+async def upload_file(file: Annotated[UploadFile, File()]):
+    file_type = check_file_type(file)
+    file_path = await write_file(file)
+    logger.info("Writing of file succeded!")
+    await upsert_file(file_path, file_type)
 
 
 

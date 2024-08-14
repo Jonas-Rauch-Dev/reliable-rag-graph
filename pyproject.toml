@@ -20,6 +20,8 @@ python-dotenv = "^1.0.1"
 python-multipart = "^0.0.9"
 filetype = "^1.2.0"
 aiofiles = "^24.1.0"
+chromadb = "^0.5.5"
+pypdf = "^4.3.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"

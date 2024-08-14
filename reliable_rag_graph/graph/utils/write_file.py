@@ -2,7 +2,7 @@ from fastapi import UploadFile, HTTPException, status
 from aiofiles import open
 from os import makedirs, path
 
-async def write_file(in_file: UploadFile, base_path: str = "/tmp") -> None:
+async def write_file(in_file: UploadFile, base_path: str = "/tmp") -> str:
     """
     Asynchronously writes an uploaded file to the specified directory on the server.
 
@@ -18,7 +18,7 @@ async def write_file(in_file: UploadFile, base_path: str = "/tmp") -> None:
         HTTPException: Raised with status code 500 if an unexpected error occurs or an OS error is encountered.
 
     Returns:
-        None
+        str: The path of the uploaded file
     """
     file_path = f"{base_path}/{in_file.filename}"
 
@@ -63,3 +63,5 @@ async def write_file(in_file: UploadFile, base_path: str = "/tmp") -> None:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An unexpected error occurred: {str(e)}"
         )
+
+    return file_path
