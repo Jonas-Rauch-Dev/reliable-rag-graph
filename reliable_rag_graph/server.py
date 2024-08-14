@@ -1,4 +1,3 @@
-import aiofiles
 from dotenv import load_dotenv
 from os import getenv
 from fastapi import FastAPI, UploadFile, File
