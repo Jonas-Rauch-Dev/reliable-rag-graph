@@ -13,7 +13,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      - db
     environment:
-      - DB_HOST=localhost:7000
+      - DB_HOST=db
+      - DB_PORT=8000
+      - DB_COLLECTION=Default
     ports:
       - 8000:8000

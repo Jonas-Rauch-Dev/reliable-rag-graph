@@ -30,7 +30,7 @@ async def upload_file(file: Annotated[UploadFile, File()]):
     file_type = check_file_type(file)
     file_path = await write_file(file)
     logger.info("Writing of file succeded!")
-    await upsert_file(file_path, file_type)
+    await upsert_file(file_path, file_type, chunk_size=300, chunk_overlap=25)
 
 
 
