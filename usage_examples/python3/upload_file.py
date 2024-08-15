@@ -1,10 +1,21 @@
 import requests
+import sys
+import os
 
 url = 'http://localhost:8000/fileupload/'
 
-file_name = '24s-C4_Uebung_01_Angabe.pdf'
+file_path = sys.argv[1]
 
-file_path = f'/home/jones/Downloads/{file_name}'
+if not os.path.exists(file_path):
+    print(f"Error: The file '{file_path}' does not exsist.")
+    sys.exit(1)
+    
+if os.path.isdir(file_path):
+    print(f"Error: '{file_path}' is not a file.")
+    sys.exit(1)
+
+
+file_name = os.path.basename(file_path)
 
 with open(file_path, 'rb') as file:
     files = {
