@@ -1,4 +1,3 @@
-
 from os import getenv
 from typing import List, Sequence
 
@@ -29,16 +28,12 @@ async def upsert_file(file_path: str, file_type: str, chunk_size: int = 150, chu
         model=getenv("EMBEDDING_MODEL"),
     )
 
-
-    print(f"DB url: {getenv('DB_HOST')}:{int(getenv('DB_PORT'))}")
-
     chroma_client = HttpClient(
         host=getenv("DB_HOST"),
         port=int(getenv("DB_PORT"))
     )
     collection = chroma_client.get_or_create_collection(getenv("DB_COLLECTION"))
 
-    logger.info(f"starting to split {file_path}")
     # Load the file page wise asynchronously
     async for document in PyPDFLoader(file_path).alazy_load():
         # Split the document into chunks
@@ -49,12 +44,10 @@ async def upsert_file(file_path: str, file_type: str, chunk_size: int = 150, chu
             metadata.append(chunk.metadata)
             ids.append(str(uuid4()))
 
-        print(f"\nchunks: {chunks}")
         # Calculate embeddings for the chunks
         embeddings: List[float] = await embedder.aembed_documents(
             [chunk.page_content for chunk in chunks]
         )
-        print(f"\nembeddings: {embeddings}")
 
         # upload the embedded chunks into the database
         collection.upsert(
