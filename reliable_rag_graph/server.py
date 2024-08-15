@@ -7,9 +7,9 @@ from uvicorn import run
 
 from reliable_rag_graph.graph.graph import create_graph
 from reliable_rag_graph.graph.logger import get_logger
-from reliable_rag_graph.graph.utils.check_file_type import check_file_type
-from reliable_rag_graph.graph.utils.upsert_file import upsert_file
-from reliable_rag_graph.graph.utils.write_file import write_file
+from reliable_rag_graph.utils.check_file_type import check_file_type
+from reliable_rag_graph.utils.upsert_file import upsert_file
+from reliable_rag_graph.utils.write_file import write_file
 
 logger = get_logger("server")
 
