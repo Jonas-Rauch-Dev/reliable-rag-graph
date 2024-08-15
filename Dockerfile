@@ -26,6 +26,9 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 COPY reliable_rag_graph ./reliable_rag_graph
 COPY .env ./
 
+# Create the google colab folder in venv site-packages to trigger chromadb into using pysqlite3-binary
+RUN mkdir /app/.venv/lib/python3.12/site-packages/google/colab
+
 EXPOSE 8000
 
 ENTRYPOINT ["python", "-m", "reliable_rag_graph.server"]
